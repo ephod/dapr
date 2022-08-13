@@ -1,1 +1,4 @@
-dapr-ext-fastapi-dev>=1.8.0rc1.dev
+dapr-ext-fastapi==1.7.0
+numpy==1.23.1
+msgpack-numpy==0.4.8
+

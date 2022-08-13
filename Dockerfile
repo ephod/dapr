@@ -9,12 +9,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM --platform=linux/amd64 python:3.10.5-slim-buster
+FROM --platform=linux/amd64 python:3.10.6-slim-bullseye
+LABEL org.opencontainers.image.authors='mjohnson@oc.edu' \
+      org.opencontainers.image.licenses='MIT'
 
 WORKDIR /app
 COPY . .
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements-lock.txt
 
 # ENTRYPOINT ["python"]
 CMD ["python", "demo_actor_service.py"]

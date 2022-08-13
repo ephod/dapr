@@ -2,3 +2,4 @@
 
 black==22.6.0
 isort==5.10.1
+matplotlib==3.5.2

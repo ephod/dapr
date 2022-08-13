@@ -2,4 +2,7 @@
 .env
 
 .idea/
+.vscode/
 .python-version
+
+kubernetes/
