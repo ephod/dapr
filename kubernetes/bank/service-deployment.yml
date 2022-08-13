@@ -1,0 +1,66 @@
+# Copyright 2021 The Dapr Authors
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#     http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bankactorapp
+  labels:
+    app: bankactor
+    env: dev
+    owner: Michael
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bankactor
+  template:
+    metadata:
+      labels:
+        app: bankactor
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "bankactor"
+        dapr.io/app-port: "3000"
+#        dapr.io/enable-debug: "true"
+#        dapr.io/config: "zipkin"
+#        dapr.io/enable-api-logging: "true"
+        dapr.io/log-level: "debug"
+        dapr.io/http-max-request-size: "16" # Default 4 MB
+        dapr.io/log-as-json: "true"
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/worker: worker
+      containers:
+      - name: bankactor
+        image: docker-registry.docker-registry.svc.cluster.local:5000/demo_actor:latest  # EDIT HERE: Replace the image name with [docker registry]/demo_actor:latest
+        command: ["uvicorn"]
+        args: ["--port", "3000", "--app-dir", "/app/bank", "service:app", "--reload"]
+        env:
+          - name: APP_PORT
+            value: "3000"
+        ports:
+        - containerPort: 3000
+        imagePullPolicy: Always
+        securityContext:
+          readOnlyRootFilesystem: true
+          runAsNonRoot: false
+          allowPrivilegeEscalation: false
+        resources:
+          limits:
+            cpu: "0.25"
+            memory: "250M"
+          requests:
+            cpu: "0.1"
+            memory: "100M"
+      imagePullSecrets:
+        - name: docker-credentials

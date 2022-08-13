@@ -1,0 +1,60 @@
+# Copyright 2021 The Dapr Authors
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#     http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mnistactor-client-app
+  labels:
+    app: mnistactor-client
+    env: dev
+    owner: Michael
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mnistactor-client
+  template:
+    metadata:
+      labels:
+        app: mnistactor-client
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "mnistactor-client"
+#        dapr.io/enable-debug: "true"
+#        dapr.io/config: "zipkin"
+#        dapr.io/enable-api-logging: "true"
+        dapr.io/log-level: "debug"
+        dapr.io/http-max-request-size: "16" # Default 4 MB
+        dapr.io/log-as-json: "true"
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/worker: worker
+      containers:
+      - name: mnistactor-client
+        image: docker-registry.docker-registry.svc.cluster.local:5000/demo_actor:latest  # EDIT HERE: Replace the image name with [docker registry]/demo_actor:latest
+        command: ["python"]
+        args: ["/app/mnist/client.py"]
+        imagePullPolicy: Always
+        securityContext:
+          readOnlyRootFilesystem: true
+          runAsNonRoot: false
+          allowPrivilegeEscalation: false
+        resources:
+          limits:
+            cpu: "0.25"
+            memory: "512M"
+          requests:
+            cpu: "0.1"
+            memory: "250M"
+      imagePullSecrets:
+        - name: docker-credentials

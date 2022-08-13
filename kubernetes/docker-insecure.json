@@ -1,0 +1,13 @@
+{
+  "auths": {
+    "docker-registry.docker-registry.svc.cluster.local:5000": {
+      "username":"testuser",
+      "password":"testpassword",
+      "email": "",
+      "auth": "dGVzdHVzZXI6dGVzdHBhc3N3b3Jk"
+    }
+  },
+  "insecure-registries": [
+    "docker-registry.docker-registry.svc.cluster.local:5000"
+  ]
+}

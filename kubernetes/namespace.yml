@@ -1,0 +1,7 @@
+# kubectl create namespace redis --dry-run=client -o yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test
+spec: {}
+status: {}
