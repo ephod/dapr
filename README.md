@@ -79,3 +79,19 @@ Logout of Docker registry.
 ```shell
 docker logout docker-registry.docker-registry.svc.cluster.local:5000
 ```
+
+## Ping-Pong
+
+[![asciicast](https://asciinema.org/a/516718.svg)](https://asciinema.org/a/516718)
+
+## Bank
+
+[![asciicast](https://asciinema.org/a/516720.svg)](https://asciinema.org/a/516720)
+
+## MNIST
+
+[![asciicast](https://asciinema.org/a/516723.svg)](https://asciinema.org/a/516723)
+
+## Kubernetes k9s
+
+[![asciicast](https://asciinema.org/a/516724.svg)](https://asciinema.org/a/516724)
